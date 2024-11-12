@@ -1,9 +1,9 @@
 <template>
-  <HomePage />
+  <RubricsPage />
 </template>
 
 <script lang="ts" setup>
-import HomePage from '@/pages/home/ui/home-page.vue'
+import { RubricsPage } from '@/pages/rubrics'
 </script>
 
 <style src="./styles/main.css"></style>
