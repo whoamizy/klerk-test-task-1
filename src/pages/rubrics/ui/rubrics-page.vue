@@ -7,8 +7,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
-import { RubricsList } from '@/widgets/rubrics-list'
-import type { IRubricItem } from '@/entities/rubrics'
+import { RubricsList, type IRubricItem } from '@/widgets/rubrics-list'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -18,12 +17,12 @@ const allowEmpty = ref(false)
 const debounceTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const apiUrl = computed(() => {
-  return API_URL + `?allowEmpty=${allowEmpty.value ? 1 : 0}`
+  return allowEmpty.value ? API_URL + `?allowEmpty=1` : API_URL
 })
 
 const fetchRubrics = async () => {
+  rubrics.value = []
   try {
-    rubrics.value = []
     const response = await fetch(apiUrl.value)
     rubrics.value = await response.json()
   } catch (err) {
