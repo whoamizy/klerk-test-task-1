@@ -71,6 +71,11 @@ const updateCheckbox = (item: IRubricItem) => {
 
   if (item.children && item.children.length > 0) {
     item.children.forEach((child) => {
+      if (countStore.checkChecked(item.id)) {
+        countStore.removeCount(child.id)
+      } else {
+        countStore.addCount(child.id, child.count)
+      }
       updateCheckbox(child)
     })
   }
