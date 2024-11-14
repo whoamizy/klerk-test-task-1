@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>Рубрикатор</h1>
+  <div class="rounded-2xl bg-white shadow-2xl max-w-[500px] mx-auto p-4">
+    <h1 class="font-semibold mb-4 text-3xl">Рубрикатор</h1>
     <RubricsList v-model="allowEmpty" :rubrics="rubrics" />
   </div>
 </template>
@@ -9,14 +9,13 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { RubricsList, type IRubricItem } from '@/widgets/rubrics-list'
 
-const API_URL = import.meta.env.VITE_API_URL
-
 const rubrics = ref<IRubricItem[]>([])
-
 const allowEmpty = ref(false)
 const debounceTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const apiUrl = computed(() => {
+  const API_URL = import.meta.env.VITE_API_URL
+
   return allowEmpty.value ? API_URL + `?allowEmpty=1` : API_URL
 })
 
