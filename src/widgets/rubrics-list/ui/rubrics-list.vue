@@ -1,12 +1,17 @@
 <template>
-  <div>
-    <div>
+  <div class="space-y-3">
+    <div class="flex items-baseline gap-2">
       <input type="checkbox" v-model="model" id="changeAllowEmpty" />
-      <label class="cursor-pointer" for="changeAllowEmpty">Отображать пустые рубрики</label>
+      <label class="cursor-pointer text-base font-medium hover:opacity-60" for="changeAllowEmpty">
+        Отображать пустые рубрики
+      </label>
     </div>
-    <div>Общая сумма count: {{ countStore.totalCount }}</div>
-    <div v-if="!rubrics.length">Загрузка...</div>
-    <ul v-else>
+    <div class="text-base">
+      Общая сумма count: <span class="font-medium">{{ countStore.totalCount }}</span>
+    </div>
+
+    <div v-if="!rubrics.length" class="text-xl font-medium">Загрузка...</div>
+    <ul v-else class="space-y-2">
       <RubricsItem
         v-for="rubric in rubrics"
         :key="rubric.id"
@@ -28,6 +33,5 @@ interface Props {
 defineProps<Props>()
 
 const model = defineModel<boolean>()
-
 const countStore = useCountStore()
 </script>

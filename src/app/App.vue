@@ -1,5 +1,7 @@
 <template>
-  <RubricsPage />
+  <div class="py-5">
+    <RubricsPage />
+  </div>
 </template>
 
 <script lang="ts" setup>

@@ -3,20 +3,21 @@
     <div class="flex items-center gap-2">
       <span
         v-if="hasChildren"
-        class="cursor-pointer w-5 h-5 flex items-center justify-center border rounded-sm"
+        class="cursor-pointer w-5 h-5 flex items-center justify-center border rounded-sm hover:opacity-70"
         @click="toggle"
       >
         {{ openerContent }}
       </span>
 
-      <input type="checkbox" :checked="isChecked" @change="updateCheckbox(rubric)" />
-
-      <a :href="getLink(rubric.url)" target="_blank">
-        {{ rubric.title }} ({{ rubric.count }}) ({{ childrenCount }})
-      </a>
+      <div class="flex items-baseline gap-2">
+        <input type="checkbox" :checked="isChecked" @change="updateCheckbox(rubric)" />
+        <a class="text-base hover:text-blue-500" :href="getLink(rubric.url)" target="_blank">
+          {{ rubric.title }} ({{ rubric.count }}) ({{ childrenCount }})
+        </a>
+      </div>
     </div>
 
-    <ul class="ml-4" v-if="isOpen && hasChildren">
+    <ul class="ml-10 space-y-2 mt-2" v-if="isOpen && hasChildren">
       <RubricsItem
         v-for="rubricChild in rubric.children"
         :key="rubricChild.id"
@@ -39,19 +40,23 @@ interface Props {
 }
 const props = defineProps<Props>()
 
+const emits = defineEmits<{
+  (e: 'updateTotal', rubricId: number, count: number): void
+}>()
+
 const countStore = useCountStore()
 
 const isOpen = ref(false)
 const toggle = () => {
   isOpen.value = !isOpen.value
 }
-
 const openerContent = computed(() => (isOpen.value ? '-' : '+'))
 
 const hasChildren = computed(() => props.rubric?.children && props.rubric.children.length > 0)
 
 const getLink = (path: string) => {
   const BASE_URL = import.meta.env.VITE_BASE_URL
+
   return BASE_URL + path
 }
 
@@ -62,10 +67,7 @@ const childrenCount = computed(() => {
   )
 })
 
-const emits = defineEmits<{
-  (e: 'updateTotal', rubricId: number, count: number): void
-}>()
-
+// Обновление общей суммы count включая дочерние на любом уровне вложенности
 const updateCheckbox = (item: IRubricItem) => {
   emits('updateTotal', item.id, item.count)
 
